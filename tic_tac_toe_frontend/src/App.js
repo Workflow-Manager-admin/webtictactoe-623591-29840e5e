@@ -1,47 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Board from './components/Board';
+import { calculateWinner } from './utils/gameUtils';
 
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
+  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [xIsNext, setXIsNext] = useState(true);
 
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+  const winner = calculateWinner(squares);
+  const status = winner === 'draw' 
+    ? "Game Over - It's a Draw!" 
+    : winner 
+      ? `Winner: ${winner}` 
+      : `Next Player: ${xIsNext ? 'X' : 'O'}`;
 
   // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+  const handleClick = (i) => {
+    if (squares[i] || calculateWinner(squares)) {
+      return;
+    }
+
+    const newSquares = squares.slice();
+    newSquares[i] = xIsNext ? 'X' : 'O';
+    setSquares(newSquares);
+    setXIsNext(!xIsNext);
+  };
+
+  // PUBLIC_INTERFACE
+  const resetGame = () => {
+    setSquares(Array(9).fill(null));
+    setXIsNext(true);
   };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="game">
+        <h1 className="game-title">Tic Tac Toe</h1>
+        <div className="game-board">
+          <Board squares={squares} onClick={handleClick} />
+        </div>
+        <div className="game-info">
+          <div className="status">{status}</div>
+          <button className="reset-button" onClick={resetGame}>
+            Reset Game
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
