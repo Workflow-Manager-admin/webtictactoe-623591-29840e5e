@@ -23,12 +23,41 @@
 
 .App {
   text-align: center;
-  background-color: var(--bg-primary);
+  background: linear-gradient(135deg, 
+    var(--bg-primary) 0%,
+    rgba(25, 118, 210, 0.05) 25%,
+    rgba(255, 152, 0, 0.05) 75%,
+    var(--bg-primary) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
   color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+.App::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%,
+    transparent 0%,
+    rgba(66, 66, 66, 0.02) 100%
+  );
+  pointer-events: none;
 }
 
 .game {
