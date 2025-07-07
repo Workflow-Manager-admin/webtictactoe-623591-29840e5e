@@ -6,7 +6,7 @@ function Square({ value, onClick }) {
     <button 
       className="square" 
       onClick={onClick}
-      style={{ color: value === 'X' ? '#1976d2' : '#ff9800' }}
+      style={{ color: value === 'X' ? 'var(--primary-color)' : 'var(--secondary-color)' }}
     >
       {value}
     </button>

@@ -132,9 +132,7 @@ function Snake() {
                display: 'grid',
                gridTemplateColumns: `repeat(${gridSize}, 20px)`,
                gap: '1px',
-               background: 'var(--border-color)',
-               padding: '10px',
-               borderRadius: '8px'
+               padding: '15px'
              }}>
           {Array.from({ length: gridSize * gridSize }).map((_, index) => {
             const x = index % gridSize;
@@ -148,13 +146,9 @@ function Snake() {
                 style={{
                   width: '20px',
                   height: '20px',
-                  backgroundColor: isSnake 
-                    ? 'var(--primary-color)'
-                    : isFood 
-                      ? 'var(--accent-color)'
-                      : 'var(--bg-secondary)',
-                  borderRadius: '2px'
+                  backgroundColor: 'var(--bg-secondary)'
                 }}
+                className={`snake-cell ${isSnake ? 'snake-segment' : ''} ${isFood ? 'snake-food' : ''}`}
               />
             );
           })}
