@@ -1,53 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
-import Board from './components/Board';
-import { calculateWinner } from './utils/gameUtils';
+import GameMenu from './components/GameMenu';
+import TicTacToe from './components/TicTacToe';
+import Snake from './components/Snake';
 
 // PUBLIC_INTERFACE
 function App() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [xIsNext, setXIsNext] = useState(true);
-
-  const winner = calculateWinner(squares);
-  const status = winner === 'draw' 
-    ? "Game Over - It's a Draw!" 
-    : winner 
-      ? `Winner: ${winner}` 
-      : `Next Player: ${xIsNext ? 'X' : 'O'}`;
-
-  // PUBLIC_INTERFACE
-  const handleClick = (i) => {
-    if (squares[i] || calculateWinner(squares)) {
-      return;
-    }
-
-    const newSquares = squares.slice();
-    newSquares[i] = xIsNext ? 'X' : 'O';
-    setSquares(newSquares);
-    setXIsNext(!xIsNext);
-  };
-
-  // PUBLIC_INTERFACE
-  const resetGame = () => {
-    setSquares(Array(9).fill(null));
-    setXIsNext(true);
-  };
-
   return (
-    <div className="App">
-      <div className="game">
-        <h1 className="game-title">Tic Tac Toe</h1>
-        <div className="game-board">
-          <Board squares={squares} onClick={handleClick} />
-        </div>
-        <div className="game-info">
-          <div className="status">{status}</div>
-          <button className="reset-button" onClick={resetGame}>
-            Reset Game
-          </button>
-        </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<GameMenu />} />
+          <Route path="/tictactoe" element={<TicTacToe />} />
+          <Route path="/snake" element={<Snake />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
